@@ -94,16 +94,12 @@ def test_find_suitable_user():
 def format_function_call(func, *args, **kwargs):
     # Преобразуем имя функции: заменяем подчеркивания на пробелы и делаем заглавные буквы
     func_name = func.__name__.replace('_', ' ').title()
+    # Собираем все аргументы
+    arg_name = ", ".join([*args, *kwargs.values()])
+    print()
+    print(f'{func_name} [{arg_name}]')
+    return f'{func_name} [{arg_name}]'
 
-    # Собираем все аргументы (позиционные и именованные)
-    all_args = []
-    if args:
-        all_args.extend(str(arg) for arg in args)
-    if kwargs:
-        all_args.extend(f"{value}" for key, value in kwargs.items())
-
-    # Форматируем результат
-    return f"{func_name} [{', '.join(all_args)}]"
 
 
 def test_readable_function():
@@ -116,14 +112,12 @@ def test_readable_function():
 def open_browser(browser_name):
     actual_result = format_function_call(open_browser, browser_name=browser_name)
     assert actual_result == "Open Browser [Chrome]", f"Expected 'Open Browser [Chrome]', got '{actual_result}'"
-    return actual_result
 
 
 def go_to_companyname_homepage(page_url):
     actual_result = format_function_call(go_to_companyname_homepage, page_url=page_url)
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]", \
         f"Expected 'Go To Companyname Homepage [https://companyname.com]', got '{actual_result}'"
-    return actual_result
 
 
 def find_registration_button_on_login_page(page_url, button_text):
@@ -134,6 +128,5 @@ def find_registration_button_on_login_page(page_url, button_text):
     )
     expected = "Find Registration Button On Login Page [https://companyname.com/login, Register]"
     assert actual_result == expected, f"Expected '{expected}', got '{actual_result}'"
-    return actual_result
 
 
